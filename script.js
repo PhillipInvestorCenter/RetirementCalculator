@@ -1,352 +1,378 @@
-// Utility Functions
+/****************************************************
+ * script.js
+ ****************************************************/
 
 /**
- * Formats a number with commas as thousands separators.
- * @param {string} value - The numeric string to format.
- * @returns {string} - The formatted string with commas.
- */
-function formatNumberWithCommas(value) {
-  // Remove all non-digit characters
-  const numericValue = value.replace(/[^0-9]/g, '');
-  if (numericValue === '') return '0';
-  // Add commas
-  return parseInt(numericValue, 10).toLocaleString();
-}
-
-/**
- * Removes commas from a formatted number string.
- * @param {string} value - The formatted string with commas.
- * @returns {number} - The numeric value.
+ * Removes commas from a string and returns a float.
+ * Example: "150,000.50" -> 150000.50
  */
 function unformatNumber(value) {
   return parseFloat(value.replace(/,/g, '')) || 0;
 }
 
 /**
- * Clears the input field if the current value is '0'.
- * @param {HTMLInputElement} input - The input element.
+ * Shows an error message for a given element ID.
  */
-function clearDefaultValue(input) {
-  if (input.value === '0') {
-    input.value = '';
-  }
+function showError(errorId, message) {
+  const errorEl = document.getElementById(errorId);
+  if (!errorEl) return;
+  errorEl.textContent = message;
+  errorEl.style.display = 'block';
 }
 
 /**
- * Formats the input field's value with commas.
- * @param {HTMLInputElement} input - The input element.
+ * Hides an error message by ID.
  */
-function formatInputValue(input) {
-  const formattedValue = formatNumberWithCommas(input.value);
-  input.value = formattedValue;
+function hideError(errorId) {
+  const errorEl = document.getElementById(errorId);
+  if (!errorEl) return;
+  errorEl.textContent = '';
+  errorEl.style.display = 'none';
 }
 
 /**
- * Validates that the input contains only numeric characters and commas.
- * @param {string} value - The input value.
- * @returns {boolean} - True if valid, false otherwise.
- */
-function isValidNumber(value) {
-  return /^[0-9,]*$/.test(value);
-}
-
-/**
- * Updates the progress bar based on filled fields.
+ * Updates progress bar (how many numeric fields > 0).
  */
 function updateProgressBar() {
-  const totalFields = document.querySelectorAll("input[data-type='number']").length;
-  const filledFields = Array.from(document.querySelectorAll("input[data-type='number']")).filter(input => unformatNumber(input.value) > 0).length;
-  const progressPercentage = Math.round((filledFields / totalFields) * 100);
-  document.getElementById("formProgress").style.width = `${progressPercentage}%`;
+  const numberInputs = document.querySelectorAll('input[data-type="number"]');
+  const total = numberInputs.length;
+  let filled = 0;
+
+  numberInputs.forEach((inp) => {
+    if (unformatNumber(inp.value) > 0) {
+      filled++;
+    }
+  });
+
+  const percent = Math.round((filled / total) * 100);
+  document.getElementById('formProgress').style.width = percent + '%';
 }
 
 /**
- * Updates calculated fields: Savings Period and Spending Period.
+ * Updates timeline fields (savingsPeriod, spendingPeriod).
  */
-function updateCalculatedFields() {
-  const currentAge = unformatNumber(document.getElementById("currentAge").value);
-  const retireAge = unformatNumber(document.getElementById("retireAge").value);
-  const deathAge = unformatNumber(document.getElementById("deathAge").value);
+function updateTimelineFields() {
+  const currentAge = unformatNumber(document.getElementById('currentAge').value);
+  const retireAge = unformatNumber(document.getElementById('retireAge').value);
+  const deathAge = unformatNumber(document.getElementById('deathAge').value);
 
   const savingsPeriod = retireAge - currentAge;
   const spendingPeriod = deathAge - retireAge;
 
-  // Ensure non-negative values
-  const displaySavingsPeriod = savingsPeriod >= 0 ? savingsPeriod : 0;
-  const displaySpendingPeriod = spendingPeriod >= 0 ? spendingPeriod : 0;
-
-  document.getElementById("savingsPeriod").textContent = displaySavingsPeriod;
-  document.getElementById("spendingPeriod").textContent = displaySpendingPeriod;
+  document.getElementById('savingsPeriod').textContent = (savingsPeriod >= 0) ? savingsPeriod : 0;
+  document.getElementById('spendingPeriod').textContent = (spendingPeriod >= 0) ? spendingPeriod : 0;
 }
 
 /**
- * Validates inputs and shows error messages.
- * @returns {boolean} - True if all inputs are valid, false otherwise.
+ * Example milestone logic, if you have .milestone elements.
+ */
+function updateMilestoneStatus() {
+  const milestones = [
+    { id: 'currentAge', element: document.querySelector('.milestone:nth-child(1)') },
+    { id: 'retireAge', element: document.querySelector('.milestone:nth-child(3)') },
+    { id: 'deathAge', element: document.querySelector('.milestone:nth-child(5)') }
+  ];
+
+  milestones.forEach(m => {
+    if (!m.element) return;
+    const val = unformatNumber(document.getElementById(m.id).value);
+    if (val > 0) {
+      m.element.classList.add('completed');
+    } else {
+      m.element.classList.remove('completed');
+    }
+  });
+}
+
+/**
+ * Validates input logic (e.g. currentAge > 0, retireAge > currentAge, etc.)
  */
 function validateInputs() {
-  const currentAge = unformatNumber(document.getElementById("currentAge").value);
-  const retireAge = unformatNumber(document.getElementById("retireAge").value);
-  const deathAge = unformatNumber(document.getElementById("deathAge").value);
+  const currentAge = unformatNumber(document.getElementById('currentAge').value);
+  const retireAge = unformatNumber(document.getElementById('retireAge').value);
+  const deathAge = unformatNumber(document.getElementById('deathAge').value);
 
   let valid = true;
 
-  // Validate Current Age
   if (currentAge <= 0) {
-    showError("currentAgeError", "กรุณาใส่อายุที่ถูกต้อง!");
+    showError('currentAgeError', 'กรุณาใส่อายุที่ถูกต้อง!');
     valid = false;
   } else {
-    hideError("currentAgeError");
+    hideError('currentAgeError');
   }
 
-  // Validate Retirement Age
   if (retireAge <= currentAge) {
-    showError("retireAgeError", "อายุเกษียณต้องมากกว่าอายุปัจจุบัน!");
+    showError('retireAgeError', 'อายุเกษียณต้องมากกว่าอายุปัจจุบัน!');
     valid = false;
   } else {
-    hideError("retireAgeError");
+    hideError('retireAgeError');
   }
 
-  // Validate Death Age
   if (deathAge <= retireAge) {
-    showError("deathAgeError", "อายุขัยต้องมากกว่าอายุเกษียณ!");
+    showError('deathAgeError', 'อายุขัยต้องมากกว่าอายุเกษียณ!');
     valid = false;
   } else {
-    hideError("deathAgeError");
+    hideError('deathAgeError');
   }
 
   updateProgressBar();
-
   return valid;
 }
 
 /**
- * Shows an error message for a specific input field.
- * @param {string} errorId - The ID of the error message element.
- * @param {string} message - The error message to display.
+ * Real-time commas + decimals. 
+ * Calls onAfterFormat() (e.g. for validation) after each reformat.
  */
-function showError(errorId, message) {
-  const errorElement = document.getElementById(errorId);
-  errorElement.textContent = message;
-  errorElement.style.display = "block";
-}
+function addCommaEvent(id, onAfterFormat) {
+  const input = document.getElementById(id);
+  if (!input) return;
 
-/**
- * Hides an error message for a specific input field.
- * @param {string} errorId - The ID of the error message element.
- */
-function hideError(errorId) {
-  const errorElement = document.getElementById(errorId);
-  errorElement.textContent = "";
-  errorElement.style.display = "none";
-}
+  input.addEventListener('input', function () {
+    let cursorPos = this.selectionStart;
+    // Remove commas
+    let raw = this.value.replace(/,/g, '');
 
-/**
- * Updates milestone completion indicators.
- */
-function updateMilestoneStatus() {
-  const milestones = [
-    { id: "currentAge", element: document.querySelector('.milestone:nth-child(1)') },
-    { id: "retireAge", element: document.querySelector('.milestone:nth-child(3)') },
-    { id: "deathAge", element: document.querySelector('.milestone:nth-child(5)') }
-  ];
+    if (raw === '') {
+      this.value = '';
+      return;
+    }
 
-  milestones.forEach(milestone => {
-    const value = unformatNumber(document.getElementById(milestone.id).value);
-    if (value > 0) {
-      milestone.element.classList.add("completed");
+    // If numeric (including decimal)
+    if (!isNaN(raw)) {
+      let parts = raw.split('.');
+      let integerPart = parts[0] || '';
+      let decimalPart = parts[1];
+
+      // Insert commas into integer part
+      let formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      let formattedValue = formattedInteger;
+      // If there's a decimal
+      if (decimalPart !== undefined) {
+        formattedValue += '.' + decimalPart;
+      }
+      this.value = formattedValue;
+
+      // Adjust cursor
+      let diff = this.value.length - raw.length;
+      this.selectionEnd = cursorPos + diff;
     } else {
-      milestone.element.classList.remove("completed");
+      // Non-numeric typed
+      this.value =
+        this.value.substring(0, cursorPos - 1) + 
+        this.value.substring(cursorPos);
+      this.selectionEnd = cursorPos - 1;
     }
-  });
-}
 
-/**
- * Handles input formatting, validation, and progress updates.
- */
-function handleInputEvents(input) {
-  // Prevent invalid characters on keypress
-  input.addEventListener("keypress", (e) => {
-    const char = String.fromCharCode(e.which);
-    if (!/[0-9]/.test(char)) {
-      e.preventDefault();
+    if (onAfterFormat && typeof onAfterFormat === 'function') {
+      onAfterFormat();
     }
   });
 
-  // Clear default value on focus
-  input.addEventListener("focus", () => {
-    clearDefaultValue(input);
-  });
-
-  // Format input and validate on input
-  input.addEventListener("input", () => {
-    if (isValidNumber(input.value)) {
-      formatInputValue(input);
-      updateCalculatedFields();
-      validateInputs();
-      updateMilestoneStatus();
-    } else {
-      // Remove invalid characters
-      input.value = input.value.replace(/[^0-9,]/g, '');
+  // Clear if "0" on focus
+  input.addEventListener('focus', () => {
+    if (input.value === '0') {
+      input.value = '';
     }
   });
 
-  // Ensure proper formatting on blur
-  input.addEventListener("blur", () => {
-    if (input.value === '') {
+  // If empty on blur, set to "0"
+  input.addEventListener('blur', () => {
+    if (input.value.trim() === '') {
       input.value = '0';
-    } else {
-      formatInputValue(input);
     }
   });
 }
 
 /**
- * Attaches event listeners to all number inputs.
- */
-function attachEventListeners() {
-  const numberInputs = document.querySelectorAll("input[data-type='number']");
-  numberInputs.forEach(input => {
-    handleInputEvents(input);
-  });
-}
-
-/**
- * Performs the retirement calculations and displays the results.
+ * Main retirement calculation
  */
 function calculateRetirement() {
-  // Perform input validation
-  if (!validateInputs()) {
-    return;
-  }
+  if (!validateInputs()) return;
 
-  // Retrieve inputs
-  const currentAge = unformatNumber(document.getElementById("currentAge").value);
-  const retireAge = unformatNumber(document.getElementById("retireAge").value);
-  const deathAge = unformatNumber(document.getElementById("deathAge").value);
+  // Gather inputs
+  const currentAge = unformatNumber(document.getElementById('currentAge').value);
+  const retireAge = unformatNumber(document.getElementById('retireAge').value);
+  const deathAge = unformatNumber(document.getElementById('deathAge').value);
+
+  const currentSalary = unformatNumber(document.getElementById('currentSalary').value);
+  const currentExpense = unformatNumber(document.getElementById('currentExpense').value);
+  const currentSavings = unformatNumber(document.getElementById('currentSavings').value);
+  const annualReturnBeforeRetire = unformatNumber(document.getElementById('annualReturn').value) / 100;
+  const inflationRate = unformatNumber(document.getElementById('inflationRate').value) / 100;
+  const legacy = unformatNumber(document.getElementById('legacy').value);
+  const annualReturnAfterRetire = unformatNumber(document.getElementById('postRetirementReturn').value) / 100;
+
+  // Basic calculations
   const savingsPeriod = retireAge - currentAge;
   const spendingPeriod = deathAge - retireAge;
 
-  const currentSalary = unformatNumber(document.getElementById("currentSalary").value);
-  const currentExpense = unformatNumber(document.getElementById("currentExpense").value);
-  const currentSavings = unformatNumber(document.getElementById("currentSavings").value);
-  const annualReturnBeforeRetire = unformatNumber(document.getElementById("annualReturn").value) / 100;
-  const inflationRate = unformatNumber(document.getElementById("inflationRate").value) / 100;
-  const legacy = unformatNumber(document.getElementById("legacy").value);
-  const annualReturnAfterRetire = unformatNumber(document.getElementById("postRetirementReturn").value) / 100;
-
-  // Step 1: Durations
-  const yearsToSave = savingsPeriod; // มีเวลาเก็บเงิน
-  const yearsToUse = spendingPeriod; // ถึงเวลาใช้เงินที่เก็บ
-
-  // Step 2: Current Expense Per Month at Retirement
-  const currentExpenseAtRetirement = currentExpense * 0.7 * Math.pow(1 + inflationRate, yearsToSave);
-
-  // Step 3: Rate Nominal and Inflation Per Month
-  const rateNominalPerMonth = Math.pow(1 + annualReturnAfterRetire, 1 / 12) - 1;
-  const rateInflationPerMonth = Math.pow(1 + inflationRate, 1 / 12) - 1;
-
-  // Step 4: Real Rate Return (Monthly)
+  // For example:
+  const currentExpenseAtRetirement = currentExpense * 0.7 * Math.pow(1 + inflationRate, savingsPeriod);
+  const rateNominalPerMonth = Math.pow(1 + annualReturnAfterRetire, 1/12) - 1;
+  const rateInflationPerMonth = Math.pow(1 + inflationRate, 1/12) - 1;
   const realRatePerMonth = (1 + rateNominalPerMonth) / (1 + rateInflationPerMonth) - 1;
 
-  // Step 5: Total Money Needed After Retirement (PV of Expenses During Retirement)
   const totalMoneyNeededAfterRetire =
-    (currentExpenseAtRetirement * (1 - Math.pow(1 + realRatePerMonth, -yearsToUse * 12))) / realRatePerMonth;
+    (currentExpenseAtRetirement * (1 - Math.pow(1 + realRatePerMonth, -spendingPeriod * 12))) / realRatePerMonth;
 
-  // Step 6: Legacy (PV Formula)
-  const legacyPresentValue = legacy / Math.pow(1 + rateNominalPerMonth, yearsToUse * 12);
-
-  // Step 7: Total Money Needed After Retirement Including Legacy
+  const legacyPresentValue = legacy / Math.pow(1 + rateNominalPerMonth, spendingPeriod * 12);
   const totalMoneyNeeded = totalMoneyNeededAfterRetire + legacyPresentValue;
+  const totalSavings = currentSavings * Math.pow(1 + annualReturnBeforeRetire, savingsPeriod);
 
-  // Step 8: Total Savings at Retirement (FV Formula for Current Savings)
-  const totalSavings = currentSavings * Math.pow(1 + annualReturnBeforeRetire, yearsToSave);
+  let needOrSurplus = totalMoneyNeeded - totalSavings;
 
-  // Step 9: Need/Surplus
-  const needOrSurplus = totalMoneyNeeded - totalSavings;
-
-  // Step 10: Monthly Saving Required (PMT Formula)
+  // Monthly saving logic
   let monthlySaving = 0;
   if (needOrSurplus > 0) {
-    const monthlyRate = annualReturnBeforeRetire / 12; // Monthly rate from annual return
-    const periods = yearsToSave * 12; // Total number of months for saving
+    const monthlyRate = annualReturnBeforeRetire / 12;
+    const periods = savingsPeriod * 12;
     const denominator = Math.pow(1 + monthlyRate, periods) - 1;
     if (denominator !== 0) {
       monthlySaving = (needOrSurplus * monthlyRate) / denominator;
-      monthlySaving = isFinite(monthlySaving) ? monthlySaving : 0; // Handle division by zero
+      monthlySaving = isFinite(monthlySaving) ? monthlySaving : 0;
     } else {
-      // If interest rate is 0
       monthlySaving = needOrSurplus / periods;
     }
   }
 
-  // Step 11: Display Results
-  document.getElementById("spendingPeriodDisplay").textContent = yearsToUse;
-  document.getElementById("totalMoneyNeededAfterRetire").textContent = '฿' + totalMoneyNeededAfterRetire.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById("legacyPresentValue").textContent = '฿' + legacyPresentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById("totalMoneyNeeded").textContent = '฿' + totalMoneyNeeded.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById("totalSavings").textContent = '฿' + totalSavings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById("needOrSurplus").textContent = '฿' + needOrSurplus.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById("monthlySaving").textContent = '฿' + monthlySaving.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // --- Display Results --- //
 
-  // Update Progress Bar to 100%
-  document.getElementById("formProgress").style.width = `100%`;
+  // spendingPeriod
+  document.getElementById('spendingPeriodDisplay').textContent =
+    spendingPeriod.toLocaleString();
 
-  // Toggle visibility with animation
-  document.getElementById("retirementForm").classList.add("fade-out");
-  setTimeout(() => {
-    document.getElementById("inputPage").style.display = "none";
-    document.getElementById("resultsPage").classList.remove("hidden");
-    document.getElementById("resultsPage").classList.add("fade-in");
-  }, 500);
-}
+  // totalMoneyNeededAfterRetire
+  document.getElementById('totalMoneyNeededAfterRetire').textContent =
+    totalMoneyNeededAfterRetire.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-/**
- * Resets the form and navigates back to the input section.
- */
-function resetForm() {
-  // Reset form fields
-  const numberInputs = document.querySelectorAll("input[data-type='number']");
-  numberInputs.forEach(input => {
-    input.value = '0';
+  // legacyPresentValue
+  document.getElementById('legacyPresentValue').textContent =
+    legacyPresentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  // totalMoneyNeeded
+  document.getElementById('totalMoneyNeeded').textContent =
+    totalMoneyNeeded.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  // totalSavings
+  document.getElementById('totalSavings').textContent =
+    totalSavings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  // needOrSurplus -> remove minus sign if negative
+  let displayNeedOrSurplus = (needOrSurplus < 0) ? Math.abs(needOrSurplus) : needOrSurplus;
+  document.getElementById('needOrSurplus').textContent =
+    displayNeedOrSurplus.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  // monthlySaving
+  document.getElementById('monthlySaving').textContent =
+    monthlySaving.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  // --- Color logic for needOrSurplus
+  const needOrSurplusEl = document.getElementById('needOrSurplus');
+  if (needOrSurplus > 0) {
+    needOrSurplusEl.style.color = 'red';   // positive => red
+  } else if (needOrSurplus < 0) {
+    needOrSurplusEl.style.color = 'green'; // negative => green
+  } else {
+    needOrSurplusEl.style.color = '#333';
+  }
+
+  // Increase font size for all result fields
+  const resultIds = [
+    'spendingPeriodDisplay',
+    'totalMoneyNeededAfterRetire',
+    'legacyPresentValue',
+    'totalMoneyNeeded',
+    'totalSavings',
+    'needOrSurplus',
+    'monthlySaving'
+  ];
+  resultIds.forEach(id => {
+    const el = document.getElementById(id);
+    el.style.fontSize = '2rem'; // increased from 1.5rem to 2rem
+    el.style.fontWeight = '600';
+    el.style.color = el.style.color || '#333333';
   });
 
-  // Reset calculated fields
-  document.getElementById("savingsPeriod").textContent = '0';
-  document.getElementById("spendingPeriod").textContent = '0';
+  // Show results
+  document.getElementById('inputPage').style.display = 'none';
+  document.getElementById('resultsPage').classList.remove('hidden');
+}
 
-  // Reset results fields
-  document.getElementById("spendingPeriodDisplay").textContent = '0';
-  document.getElementById("totalMoneyNeededAfterRetire").textContent = '฿0.00';
-  document.getElementById("legacyPresentValue").textContent = '฿0.00';
-  document.getElementById("totalMoneyNeeded").textContent = '฿0.00';
-  document.getElementById("totalSavings").textContent = '฿0.00';
-  document.getElementById("needOrSurplus").textContent = '฿0.00';
-  document.getElementById("monthlySaving").textContent = '฿0.00';
-
-  // Hide results and show form with animation
-  document.getElementById("resultsPage").classList.add("fade-out");
+/**
+ * "แก้ไข" -> go back to input page with existing data
+ */
+function goBackToForm() {
+  document.getElementById('resultsPage').classList.add('fade-out');
   setTimeout(() => {
-    document.getElementById("resultsPage").classList.add("hidden");
-    document.getElementById("inputPage").style.display = "block";
-    document.getElementById("inputPage").classList.remove("fade-out");
-    document.getElementById("inputPage").classList.add("fade-in");
-    // Reset progress bar
-    document.getElementById("formProgress").style.width = `0%`;
+    document.getElementById('resultsPage').classList.add('hidden');
+    document.getElementById('inputPage').style.display = 'block';
+    document.getElementById('resultsPage').classList.remove('fade-out');
   }, 500);
 }
 
 /**
- * Initializes the application.
+ * "เริ่มใหม่" -> reset everything to 0
  */
-function init() {
-  attachEventListeners();
+function resetForm() {
+  const numberInputs = document.querySelectorAll('input[data-type="number"]');
+  numberInputs.forEach(inp => {
+    inp.value = '0';
+  });
 
-  // Calculate Button Event Listener
-  document.getElementById("calculateButton").addEventListener("click", calculateRetirement);
+  // Reset progress
+  document.getElementById('formProgress').style.width = '0%';
 
-  // Back Button Event Listener
-  document.getElementById("backButton").addEventListener("click", resetForm);
+  // Reset timeline
+  document.getElementById('savingsPeriod').textContent = '0';
+  document.getElementById('spendingPeriod').textContent = '0';
+
+  // Reset result fields
+  document.getElementById('spendingPeriodDisplay').textContent = '0';
+  document.getElementById('totalMoneyNeededAfterRetire').textContent = '0.00';
+  document.getElementById('legacyPresentValue').textContent = '0.00';
+  document.getElementById('totalMoneyNeeded').textContent = '0.00';
+  document.getElementById('totalSavings').textContent = '0.00';
+  document.getElementById('needOrSurplus').textContent = '0.00';
+  document.getElementById('monthlySaving').textContent = '0.00';
+
+  document.getElementById('resultsPage').classList.add('fade-out');
+  setTimeout(() => {
+    document.getElementById('resultsPage').classList.add('hidden');
+    document.getElementById('inputPage').style.display = 'block';
+    document.getElementById('resultsPage').classList.remove('fade-out');
+  }, 500);
 }
 
-// Initialize the application on DOMContentLoaded
-document.addEventListener("DOMContentLoaded", init);
+/**
+ * Initialize on DOM content loaded
+ */
+function init() {
+  // Attach addCommaEvent to numeric fields
+  const numericFields = [
+    'currentAge',
+    'retireAge',
+    'deathAge',
+    'currentSalary',
+    'currentExpense',
+    'currentSavings',
+    'annualReturn',
+    'inflationRate',
+    'legacy',
+    'postRetirementReturn'
+  ];
+  numericFields.forEach(id => {
+    addCommaEvent(id, () => {
+      updateTimelineFields();
+      validateInputs();
+      updateMilestoneStatus();
+    });
+  });
+
+  // Hook up buttons
+  document.getElementById('calculateButton').addEventListener('click', calculateRetirement);
+  document.getElementById('editButton').addEventListener('click', goBackToForm);
+  document.getElementById('restartButton').addEventListener('click', resetForm);
+}
+
+// Fire after DOM content loaded
+document.addEventListener('DOMContentLoaded', init);
