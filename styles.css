@@ -1,6 +1,6 @@
 /* Google Fonts and Base Styles */
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Kanit', sans-serif;
   background-color: #f4f6f8;
   margin: 0;
   padding: 0;
@@ -8,23 +8,23 @@ body {
 
 .container {
   max-width: 1000px;
-  margin: 40px auto;
-  padding: 20px;
+  margin: 20px auto;
+  padding: 10px;
 }
 
 header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 header h1 {
-  font-size: 2.5rem;
+  font-size: 2.5rem; /* Increased font size */
   color: #333333;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 header p {
-  font-size: 1.1rem;
+  font-size: 1.2rem; /* Increased font size */
   color: #666666;
 }
 
@@ -34,7 +34,7 @@ header p {
   background-color: #e0e0e0;
   border-radius: 25px;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   height: 20px;
 }
 
@@ -51,7 +51,7 @@ header p {
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
   flex-wrap: wrap;
 }
 
@@ -61,7 +61,7 @@ header p {
   top: 50%;
   left: 10%;
   right: 10%;
-  height: 4px;
+  height: 3px;
   background-color: #cccccc;
   z-index: -1;
 }
@@ -72,14 +72,14 @@ header p {
   align-items: center;
   width: 18%;
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .icon {
   background-color: #00aaff;
   color: white;
-  width: 50px;
-  height: 50px;
+  width: 50px; /* Increased size */
+  height: 50px; /* Increased size */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -98,18 +98,18 @@ header p {
 
 .input-group label {
   margin-bottom: 5px;
-  font-size: 14px;
+  font-size: 1.1rem; /* Increased font size */
   display: block;
 }
 
 .input-group input {
   width: 100%;
-  max-width: 150px;
+  max-width: 160px; /* Increased width to accommodate larger font */
   margin: 0 auto;
-  padding: 10px;
+  padding: 12px 15px; /* Increased padding */
   border: 1px solid #cccccc;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 1rem; /* Increased font size */
   transition: border-color 0.3s ease;
 }
 
@@ -121,20 +121,20 @@ header p {
 
 .calculated-value {
   display: inline-block;
-  padding: 10px 15px;
+  padding: 12px 15px; /* Increased padding */
   background-color: #e0f7fa;
   color: #006064;
   border: 1px solid #b3e0ff;
   border-radius: 5px;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 1rem; /* Increased font size */
   width: 100%;
   text-align: center;
 }
 
 .error-message {
   color: #d32f2f;
-  font-size: 0.875rem;
+  font-size: 0.85rem; /* Slight increase for better readability */
   margin-top: 5px;
   display: none;
 }
@@ -142,40 +142,41 @@ header p {
 /* Card Styles */
 .card {
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Increased padding */
+  margin-bottom: 15px;
 }
 
 .card h2 {
-  font-size: 1.5rem;
+  font-size: 1.6rem; /* Increased font size */
   color: #00aaff;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   position: relative;
 }
 
 .card h2::after {
   content: '';
   position: absolute;
-  width: 50px;
-  height: 4px;
+  width: 40px;
+  height: 3px;
   background-color: #00aaff;
-  bottom: -10px;
+  bottom: -5px;
   left: 0;
 }
 
 /* Button Styles */
 button {
   width: 100%;
-  padding: 15px;
+  padding: 15px; /* Increased padding */
   background-color: #00aaff;
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 1.1rem; /* Increased font size */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -194,18 +195,19 @@ button:focus {
 
 .card.results {
   background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Increased padding */
 }
 
 .card.results h2 {
+  font-size: 1.6rem; /* Increased font size */
   color: #28a745;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 #detailedResults p {
-  font-size: 1rem;
+  font-size: 1rem; /* Increased font size */
   color: #555555;
   margin: 10px 0;
 }
@@ -223,9 +225,15 @@ button:focus {
   background-color: #e65c00;
 }
 
+/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 /* Hidden Class */
@@ -233,7 +241,36 @@ button:focus {
   display: none;
 }
 
-/* Responsive Design */
+/* Responsive Design Enhancements */
+
+/* Medium Devices (Tablets, 768px and below) */
+@media (max-width: 992px) {
+  .timeline {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .milestone {
+    width: 22%;
+  }
+
+  .input-group label {
+    font-size: 1rem;
+  }
+
+  .input-group input {
+    max-width: 140px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .calculated-value {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Small Devices (Phones, 768px and below) */
 @media (max-width: 768px) {
   .timeline {
     flex-direction: column;
@@ -242,40 +279,94 @@ button:focus {
 
   .milestone {
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     position: relative;
-    padding-left: 30px;
+    padding-left: 25px;
+    display: flex;
+    align-items: center;
   }
 
-  .timeline::before {
-    top: 20px;
-    left: 50%;
-    right: auto;
-    width: 4px;
-    height: calc(100% - 40px);
+  .milestone .icon {
+    margin-right: 15px;
+    margin-bottom: 0;
   }
 
-  .milestone::after {
-    content: '';
-    position: absolute;
-    top: 25px;
-    left: 50%;
-    width: 20px;
-    height: 4px;
-    background-color: #cccccc;
+  .input-group {
+    text-align: left;
   }
 
-  .milestone:last-child::after {
-    display: none;
+  .input-group label {
+    font-size: 1rem;
+  }
+
+  .input-group input {
+    max-width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
   }
 
   .calculated-value {
-    width: 100%;
-    margin-top: 10px;
+    padding: 10px 12px;
+    font-size: 0.95rem;
   }
 
-  .input-group.calculated {
-    flex-direction: column;
-    align-items: flex-start;
+  .card {
+    padding: 15px;
+  }
+
+  .card h2 {
+    font-size: 1.4rem;
+  }
+
+  button {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Devices (Portrait Phones, 480px and below) */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  header p {
+    font-size: 1rem;
+  }
+
+  .milestone .icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .input-group label {
+    font-size: 0.95rem;
+  }
+
+  .input-group input {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .calculated-value {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  .card h2 {
+    font-size: 1.2rem;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  #detailedResults p {
+    font-size: 0.95rem;
   }
 }
