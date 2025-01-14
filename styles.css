@@ -1,0 +1,281 @@
+/* Google Fonts and Base Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 1.1rem;
+  color: #666666;
+}
+
+/* Progress Bar */
+.progress-bar {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 25px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  height: 20px;
+}
+
+.progress-bar .progress {
+  height: 100%;
+  width: 0%;
+  background-color: #00aaff;
+  transition: width 0.4s ease;
+}
+
+/* Timeline Styles */
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  right: 10%;
+  height: 4px;
+  background-color: #cccccc;
+  z-index: -1;
+}
+
+.milestone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 18%;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.icon {
+  background-color: #00aaff;
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.icon:hover {
+  background-color: #0088cc;
+}
+
+.input-group {
+  text-align: center;
+}
+
+.input-group label {
+  margin-bottom: 5px;
+  font-size: 14px;
+  display: block;
+}
+
+.input-group input {
+  width: 100%;
+  max-width: 150px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #00aaff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+}
+
+.calculated-value {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #e0f7fa;
+  color: #006064;
+  border: 1px solid #b3e0ff;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 16px;
+  width: 100%;
+  text-align: center;
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: none;
+}
+
+/* Card Styles */
+.card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  color: #00aaff;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.card h2::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 4px;
+  background-color: #00aaff;
+  bottom: -10px;
+  left: 0;
+}
+
+/* Button Styles */
+button {
+  width: 100%;
+  padding: 15px;
+  background-color: #00aaff;
+  color: #ffffff;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0088cc;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
+}
+
+/* Results Section */
+#resultsPage {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.card.results {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+}
+
+.card.results h2 {
+  color: #28a745;
+  margin-bottom: 20px;
+}
+
+#detailedResults p {
+  font-size: 1rem;
+  color: #555555;
+  margin: 10px 0;
+}
+
+#detailedResults span {
+  font-weight: 600;
+  color: #006064;
+}
+
+#backButton {
+  background-color: #ff6600;
+}
+
+#backButton:hover {
+  background-color: #e65c00;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Hidden Class */
+.hidden {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .timeline {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .milestone {
+    width: 100%;
+    margin-bottom: 30px;
+    position: relative;
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    top: 20px;
+    left: 50%;
+    right: auto;
+    width: 4px;
+    height: calc(100% - 40px);
+  }
+
+  .milestone::after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    width: 20px;
+    height: 4px;
+    background-color: #cccccc;
+  }
+
+  .milestone:last-child::after {
+    display: none;
+  }
+
+  .calculated-value {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .input-group.calculated {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
