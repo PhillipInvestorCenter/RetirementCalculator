@@ -3,14 +3,14 @@
  ****************************************************/
 
 /**
- * Removes commas and returns float. E.g. "1,234.56" -> 1234.56
+ * Removes commas and returns float.
  */
 function unformatNumber(value) {
   return parseFloat(value.replace(/,/g, '')) || 0;
 }
 
 /**
- * Show/hide error messages
+ * showError / hideError
  */
 function showError(errorId, message) {
   const el = document.getElementById(errorId);
@@ -26,23 +26,21 @@ function hideError(errorId) {
 }
 
 /**
- * updateProgressBar - how many fields have > 0
+ * updateProgressBar
  */
 function updateProgressBar() {
   const numberInputs = document.querySelectorAll('input[data-type="number"]');
   const total = numberInputs.length;
   let filled = 0;
   numberInputs.forEach(inp => {
-    if (unformatNumber(inp.value) > 0) {
-      filled++;
-    }
+    if (unformatNumber(inp.value) > 0) filled++;
   });
   const pct = Math.round((filled / total) * 100);
   document.getElementById('formProgress').style.width = pct + '%';
 }
 
 /**
- * updateTimelineFields (savingsPeriod, spendingPeriod)
+ * updateTimelineFields
  */
 function updateTimelineFields() {
   const cAge = unformatNumber(document.getElementById('currentAge').value);
@@ -52,6 +50,7 @@ function updateTimelineFields() {
   const savingsPeriod = rAge - cAge;
   const spendingPeriod = dAge - rAge;
 
+  // Ensure non-negative
   document.getElementById('savingsPeriod').textContent = (savingsPeriod >= 0) ? savingsPeriod : 0;
   document.getElementById('spendingPeriod').textContent = (spendingPeriod >= 0) ? spendingPeriod : 0;
 }
@@ -72,12 +71,14 @@ function validateInputs() {
   } else {
     hideError('currentAgeError');
   }
+
   if (rAge <= cAge) {
     showError('retireAgeError', 'อายุเกษียณต้องมากกว่าอายุปัจจุบัน!');
     valid = false;
   } else {
     hideError('retireAgeError');
   }
+
   if (dAge <= rAge) {
     showError('deathAgeError', 'อายุขัยต้องมากกว่าอายุเกษียณ!');
     valid = false;
@@ -90,7 +91,7 @@ function validateInputs() {
 }
 
 /**
- * addCommaEvent - real-time comma insertion + decimals
+ * Real-time comma + decimal
  */
 function addCommaEvent(input, onAfterFormat) {
   input.addEventListener('input', () => {
@@ -100,18 +101,18 @@ function addCommaEvent(input, onAfterFormat) {
       input.value = '';
       return;
     }
-    // If numeric
+
     if (!isNaN(raw)) {
       let parts = raw.split('.');
       let intPart = parts[0] || '';
       let decPart = parts[1];
-      // Insert commas
       let formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       let newVal = formattedInt;
       if (decPart !== undefined) {
         newVal += '.' + decPart;
       }
       input.value = newVal;
+
       // Adjust cursor
       const diff = newVal.length - raw.length;
       input.selectionEnd = cursorPos + diff;
@@ -122,6 +123,7 @@ function addCommaEvent(input, onAfterFormat) {
         input.value.substring(cursorPos);
       input.selectionEnd = cursorPos - 1;
     }
+
     if (onAfterFormat) onAfterFormat();
   });
 
@@ -131,7 +133,8 @@ function addCommaEvent(input, onAfterFormat) {
       input.value = '';
     }
   });
-  // If empty on blur => "0"
+
+  // If empty on blur => '0'
   input.addEventListener('blur', () => {
     if (!input.value.trim()) {
       input.value = '0';
@@ -140,7 +143,7 @@ function addCommaEvent(input, onAfterFormat) {
 }
 
 /**
- * attachEnterKey - pressing ENTER jumps to next field or button
+ * Press ENTER -> next input
  */
 function attachEnterKey(input, inputs) {
   input.addEventListener('keydown', (e) => {
@@ -151,7 +154,6 @@ function attachEnterKey(input, inputs) {
       if (nextIdx < inputs.length) {
         inputs[nextIdx].focus();
       } else {
-        // If last field, focus calculate button
         const calcBtn = document.getElementById('calculateButton');
         if (calcBtn) calcBtn.focus();
       }
@@ -160,7 +162,7 @@ function attachEnterKey(input, inputs) {
 }
 
 /**
- * calculateRetirement - main calculation, no minus sign on negative
+ * calculateRetirement - now fully rounding decimals
  */
 function calculateRetirement() {
   if (!validateInputs()) return;
@@ -185,21 +187,19 @@ function calculateRetirement() {
   const expenseAtRetire = cExpense * 0.7 * Math.pow(1 + inflRate, savingsPeriod);
   const rateNominalPerMonth = Math.pow(1 + annReturnAfter, 1/12) - 1;
   const rateInflationPerMonth = Math.pow(1 + inflRate, 1/12) - 1;
-  const realRatePerMonth = (1 + rateNominalPerMonth) / (1 + rateInflationPerMonth) - 1;
+  const realRatePerMonth = (1 + rateNominalPerMonth)/(1 + rateInflationPerMonth) - 1;
 
   const totalNeededAfterRetire =
     (expenseAtRetire * (1 - Math.pow(1 + realRatePerMonth, -spendingPeriod * 12))) / realRatePerMonth;
+
   const legacyPresentValue = legacy / Math.pow(1 + rateNominalPerMonth, spendingPeriod * 12);
 
   const totalNeeded = totalNeededAfterRetire + legacyPresentValue;
-
-  // Future value of current savings
   const totalSavings = cSavings * Math.pow(1 + annReturnBefore, savingsPeriod);
 
-  // Need or Surplus
   let needOrSurplus = totalNeeded - totalSavings;
 
-  // Monthly saving
+  // monthly saving
   let monthlySaving = 0;
   if (needOrSurplus > 0) {
     const monthlyRate = annReturnBefore / 12;
@@ -213,34 +213,46 @@ function calculateRetirement() {
     }
   }
 
-  // Display results
+  // --- Rounding logic for each result field --- //
+  // A helper function to round and format with commas
+  const formatRounded = (num) => {
+    const rounded = Math.round(num);  // round to nearest integer
+    return rounded.toLocaleString();
+  };
+
+  // Fill in results (no decimals, fully rounded):
   document.getElementById('spendingPeriodDisplay').textContent =
-    spendingPeriod.toLocaleString();
+    savingsPeriod >= 0 ? spendingPeriod.toLocaleString() : 0; // just in case
+
   document.getElementById('totalMoneyNeededAfterRetire').textContent =
-    totalNeededAfterRetire.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    formatRounded(totalNeededAfterRetire);
+
   document.getElementById('legacyPresentValue').textContent =
-    legacyPresentValue.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    formatRounded(legacyPresentValue);
+
   document.getElementById('totalMoneyNeeded').textContent =
-    totalNeeded.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    formatRounded(totalNeeded);
+
   document.getElementById('totalSavings').textContent =
-    totalSavings.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    formatRounded(totalSavings);
 
   // Remove minus sign if negative
-  const absNeedOrSurplus = (needOrSurplus < 0) ? Math.abs(needOrSurplus) : needOrSurplus;
-  document.getElementById('needOrSurplus').textContent =
-    absNeedOrSurplus.toLocaleString(undefined, { minimumFractionDigits: 2 });
+  let absNeedOrSurplus = needOrSurplus < 0 ? -needOrSurplus : needOrSurplus;
+  absNeedOrSurplus = Math.round(absNeedOrSurplus); // round
+  document.getElementById('needOrSurplus').textContent = absNeedOrSurplus.toLocaleString();
 
+  let monthlySavingRounded = Math.round(monthlySaving);
   document.getElementById('monthlySaving').textContent =
-    monthlySaving.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    monthlySavingRounded.toLocaleString();
 
-  // Colorเงินขาด
-  const needSurpEl = document.getElementById('needOrSurplus');
+  // color
+  const nsEl = document.getElementById('needOrSurplus');
   if (needOrSurplus > 0) {
-    needSurpEl.style.color = 'red';   // positive => red
+    nsEl.style.color = 'red';
   } else if (needOrSurplus < 0) {
-    needSurpEl.style.color = 'green'; // negative => green
+    nsEl.style.color = 'green';
   } else {
-    needSurpEl.style.color = '#333';
+    nsEl.style.color = '#333';
   }
 
   // Show results
@@ -249,7 +261,7 @@ function calculateRetirement() {
 }
 
 /**
- * goBackToForm - "แก้ไข"
+ * goBackToForm
  */
 function goBackToForm() {
   document.getElementById('resultsPage').classList.add('fade-out');
@@ -261,22 +273,16 @@ function goBackToForm() {
 }
 
 /**
- * resetForm - "เริ่มใหม่"
+ * resetForm
  */
 function resetForm() {
-  const numberInputs = document.querySelectorAll('input[data-type="number"]');
-  numberInputs.forEach(inp => {
-    inp.value = '0';
-  });
+  const inputs = document.querySelectorAll('input[data-type="number"]');
+  inputs.forEach(inp => inp.value = '0');
 
-  // Reset progress bar
   document.getElementById('formProgress').style.width = '0%';
-
-  // Reset timeline
   document.getElementById('savingsPeriod').textContent = '0';
   document.getElementById('spendingPeriod').textContent = '0';
 
-  // Reset results
   document.getElementById('spendingPeriodDisplay').textContent = '0';
   document.getElementById('totalMoneyNeededAfterRetire').textContent = '0.00';
   document.getElementById('legacyPresentValue').textContent = '0.00';
@@ -285,7 +291,6 @@ function resetForm() {
   document.getElementById('needOrSurplus').textContent = '0.00';
   document.getElementById('monthlySaving').textContent = '0.00';
 
-  // Fade out results, show form
   document.getElementById('resultsPage').classList.add('fade-out');
   setTimeout(() => {
     document.getElementById('resultsPage').classList.add('hidden');
@@ -295,10 +300,9 @@ function resetForm() {
 }
 
 /**
- * attachEnterKey logic & comma events
+ * init
  */
 function init() {
-  // All numeric fields
   const fieldIDs = [
     'currentAge',
     'retireAge',
@@ -313,14 +317,13 @@ function init() {
   ];
   const inputs = fieldIDs.map(id => document.getElementById(id)).filter(Boolean);
 
-  // Real-time comma + decimal, ENTER -> next
   inputs.forEach(input => {
     addCommaEvent(input, () => {
       updateTimelineFields();
       validateInputs();
     });
   });
-  inputs.forEach((input) => {
+  inputs.forEach(input => {
     attachEnterKey(input, inputs);
   });
 
