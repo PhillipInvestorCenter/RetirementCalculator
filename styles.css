@@ -1,34 +1,41 @@
-/* Use Kanit font + bigger base font */
+/* Use Kanit font for everything */
 * {
   font-family: 'Kanit', sans-serif;
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   padding: 0;
   background-color: #f4f6f8;
   color: #333;
-  font-size: 1.2rem; /* Increase base font size */
+  font-size: 1.2rem;
 }
 
-.container {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 10px;
-}
-
-/* Header */
-header {
+/* Gradient header */
+.app-header {
+  background: linear-gradient(120deg, #4173ff 0%, #66b2ff 100%);
+  padding: 30px 20px;
   text-align: center;
-  margin-bottom: 15px;
+  color: #fff;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-header h1 {
-  font-size: 2.4rem; /* bigger */
+.app-header h1 {
+  font-size: 2.2rem;
   margin-bottom: 5px;
 }
-header p {
-  font-size: 1.4rem; /* bigger */
-  color: #666;
+.app-header p {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+/* Container */
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 10px 20px;
 }
 
 /* Progress Bar */
@@ -36,67 +43,108 @@ header p {
   width: 100%;
   background-color: #e0e0e0;
   border-radius: 25px;
-  height: 30px; /* bigger */
+  height: 30px;
   overflow: hidden;
-  margin-bottom: 25px;
+  margin: 20px 0;
 }
-.progress {
+.progress-bar .progress {
   width: 0%;
   height: 100%;
   background-color: #007BFF;
   transition: width 0.4s ease;
 }
 
-/* Timeline */
+/* modern-shadow (rounded card style) */
+.modern-shadow {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.07);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+/* Timeline layout */
 .timeline {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 30px;
 }
+
+/* Age sections with bigger font, e.g. currentAge, retireAge, deathAge */
+.age-section {
+  width: 19%;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+.age-section input {
+  font-size: 1.2rem;  /* bigger font for "ปัจจุบันอายุ" */
+}
+
+/* For the auto-calculated field if needed */
+.age-calculated {
+  width: 19%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.age-calculated .calculated-value {
+  font-size: 1.2rem; 
+}
+
+/* .other-age-input -> bigger font as well */
+.other-age-input {
+  width: 19%;
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+.other-age-input input {
+  font-size: 1.2rem;  /* bigger font for "จะเกษียณตอนอายุ" & "สิ้นอายุขัย" */
+}
+
+/* Milestone default */
 .milestone {
-  width: 18%;
+  width: 19%;
   text-align: center;
   margin-bottom: 20px;
   position: relative;
 }
 .icon {
-  width: 70px; /* bigger */
-  height: 70px; /* bigger */
+  width: 60px;
+  height: 60px;
   background-color: #007BFF;
   color: #fff;
   border-radius: 50%;
-  font-size: 2rem; /* bigger icon text */
-  line-height: 70px;
+  font-size: 1.5rem;
+  line-height: 60px;
   margin: 0 auto 8px;
 }
 
-/* Calculated Value (timeline) */
+/* Calculated Value (just for reference) */
 .calculated-value {
   display: inline-block;
-  padding: 12px; 
+  padding: 12px;
   background-color: #e0f7fa;
   color: #006064;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 1.3rem; /* bigger text */
+  font-size: 1.2rem;
 }
 
-/* Cards */
+/* Card style */
 .card {
+  border-radius: 15px;
   background-color: #fff;
-  padding: 30px; /* bigger padding */
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 20px;
   margin-bottom: 20px;
 }
 .card h2 {
-  font-size: 1.8rem; /* bigger */
+  font-size: 1.6rem;
   margin-bottom: 15px;
 }
 
-/* Inputs and error messages */
+/* Input groups inside card */
 .input-group {
   margin-bottom: 20px;
 }
@@ -104,50 +152,52 @@ header p {
   display: block;
   font-weight: 500;
   margin-bottom: 8px;
-  font-size: 1.2rem; /* bigger */
 }
 .input-group input {
   width: 100%;
-  padding: 12px; /* bigger */
-  font-size: 1.2rem; /* bigger */
+  padding: 12px;
+  font-size: 1.1rem; /* base font for inputs */
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
+/* Error message */
 .error-message {
   color: red;
   display: none;
-  font-size: 1rem; 
+  font-size: 1rem;
+  margin-top: 5px;
 }
 
-/* Round Buttons (bigger) */
+/* Bottom Nav with round buttons */
+.bottom-nav {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 button.round-button {
-  padding: 14px 50px; 
-  font-size: 1.2rem; /* bigger */
+  padding: 14px 40px;
+  font-size: 1.2rem;
   border: none;
   border-radius: 999px;
   cursor: pointer;
   background-color: #007BFF;
   color: #fff;
-  margin-top: 10px;
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 button.round-button:hover {
   transform: scale(1.05);
-  background-color: #0056b3; 
+  background-color: #0056b3;
 }
 
-/* Results Card */
-.card.results {
-  padding: 30px; 
-}
+/* Results section */
 .card.results h2 {
-  font-size: 2.2rem; 
-  color: #28a745;
+  font-size: 2rem;
+  color: #0060ff;
   margin-bottom: 20px;
 }
-
-/* .result-row for aligning label and value with space for "บาท" */
 .result-row {
   display: flex;
   justify-content: space-between;
@@ -155,7 +205,8 @@ button.round-button:hover {
   margin: 16px 0;
 }
 .result-row .label {
-  font-size: 1.4rem; /* bigger */
+  font-size: 1.3rem;
+  color: #555;
 }
 .result-row .value {
   display: flex;
@@ -163,16 +214,16 @@ button.round-button:hover {
   justify-content: flex-end;
 }
 .result-row .value .result-number {
-  font-size: 1.8rem; /* bigger, bolder for numeric */
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-right: 10px; 
+  margin-right: 8px;
 }
 .result-row .value .unit {
-  font-size: 1.4rem; 
+  font-size: 1.3rem;
   font-weight: 400;
 }
 
-/* Hidden / fade animations */
+/* Hidden & Fade-out */
 .hidden {
   display: none;
 }
@@ -197,34 +248,37 @@ button.round-button:hover {
   }
 }
 
-/* Responsive for small screens ~ iPhone 15 */
+/* Mobile responsiveness */
 @media (max-width: 480px) {
+  .app-header {
+    padding: 20px 15px;
+  }
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+  .app-header p {
+    font-size: 1.1rem;
+  }
   .timeline {
     flex-direction: column;
     align-items: center;
   }
-  .milestone {
+
+  /* Age sections on new lines, center them */
+  .age-section,
+  .age-calculated,
+  .other-age-input {
     width: 100%;
     margin-bottom: 25px;
+    text-align: center;
   }
-  .icon {
-    width: 60px;
-    height: 60px;
-    font-size: 1.7rem;
-    line-height: 60px;
-  }
-  .card {
-    padding: 25px;
-  }
-  header h1 {
-    font-size: 2rem;
-  }
-  header p {
-    font-size: 1.2rem;
+
+  .bottom-nav {
+    flex-direction: column;
   }
   button.round-button {
     width: 100%;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     margin-top: 5px;
   }
   .result-row {
