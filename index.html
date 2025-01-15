@@ -11,24 +11,25 @@
 </head>
 <body>
 
+  <!-- APP HEADER -->
+  <div class="app-header">
+    <h1>เครื่องคำนวณเงินเกษียณ</h1>
+    <p>วางแผนการเงินเพื่อชีวิตหลังเกษียณที่มั่นคง</p>
+  </div>
+
   <!-- INPUT PAGE -->
   <div id="inputPage" class="container">
-    <header>
-      <h1>เครื่องคำนวณเงินเกษียณ</h1>
-      <p>วางแผนการเงินเพื่อชีวิตหลังเกษียณที่มั่นคง</p>
-    </header>
-
     <!-- Progress Bar -->
     <div class="progress-bar">
       <div class="progress" id="formProgress"></div>
     </div>
 
-    <!-- Retirement Form -->
     <form id="retirementForm">
-      <!-- Timeline Display -->
-      <div class="timeline">
-        <!-- Current Age -->
-        <div class="milestone">
+
+      <!-- Timeline Section with Age Inputs -->
+      <div class="timeline modern-shadow">
+        <!-- ปัจจุบันอายุ (ปี) -->
+        <div class="milestone age-section">
           <div class="icon">👤</div>
           <label for="currentAge">ปัจจุบันอายุ (ปี)</label>
           <input 
@@ -42,18 +43,18 @@
           <small id="currentAgeError" class="error-message"></small>
         </div>
 
-        <!-- Savings Period -->
-        <div class="milestone">
+        <!-- มีเวลาเก็บเงิน (ปี) -->
+        <div class="milestone age-calculated">
           <div class="icon">⏳</div>
           <label>มีเวลาเก็บเงิน (ปี)</label>
           <div class="calculated-value" id="savingsPeriod">0</div>
         </div>
 
-        <!-- Retire Age -->
-        <div class="milestone">
+        <!-- จะเกษียณตอนอายุ (ปี) -->
+        <div class="milestone other-age-input">
           <div class="icon">💼</div>
           <label for="retireAge">จะเกษียณตอนอายุ (ปี)</label>
-          <input 
+          <input
             id="retireAge"
             data-type="number"
             value="0"
@@ -64,18 +65,18 @@
           <small id="retireAgeError" class="error-message"></small>
         </div>
 
-        <!-- Spending Period -->
+        <!-- ถึงเวลาใช้เงินที่เก็บ (ปี) -->
         <div class="milestone">
           <div class="icon">👛</div>
           <label>ถึงเวลาใช้เงินที่เก็บ (ปี)</label>
           <div class="calculated-value" id="spendingPeriod">0</div>
         </div>
 
-        <!-- Death Age -->
-        <div class="milestone">
+        <!-- สิ้นอายุขัย (ปี) -->
+        <div class="milestone other-age-input">
           <div class="icon">❤️</div>
           <label for="deathAge">สิ้นอายุขัย (ปี)</label>
-          <input 
+          <input
             id="deathAge"
             data-type="number"
             value="0"
@@ -87,8 +88,8 @@
         </div>
       </div>
 
-      <!-- Card: Before Retirement -->
-      <div class="card">
+      <!-- Card: ก่อนเกษียณอายุ -->
+      <div class="card modern-shadow">
         <h2>ช่วงก่อนเกษียณอายุ</h2>
         <div class="input-group">
           <label for="currentSalary">เงินเดือนปัจจุบัน (บาท/เดือน)</label>
@@ -136,8 +137,8 @@
         </div>
       </div>
 
-      <!-- Card: After Retirement -->
-      <div class="card">
+      <!-- Card: หลังเกษียณอายุ -->
+      <div class="card modern-shadow">
         <h2>ช่วงหลังเกษียณอายุ</h2>
         <div class="input-group">
           <label for="legacy">ต้องการเหลือเงินไว้ให้มรดก (บาท)</label>
@@ -174,17 +175,18 @@
         </div>
       </div>
 
-      <!-- Calculate Button -->
-      <button type="button" id="calculateButton" class="round-button">คำนวณเงินเกษียณ</button>
+      <!-- Bottom Nav - Calculate -->
+      <div class="bottom-nav">
+        <button type="button" id="calculateButton" class="round-button">คำนวณเงินเกษียณ</button>
+      </div>
     </form>
   </div>
 
   <!-- RESULTS PAGE -->
   <div id="resultsPage" class="hidden container">
-    <div class="card results">
+    <div class="card modern-shadow results">
       <h2>ผลการคำนวณเงินเกษียณ</h2>
 
-      <!-- Use .result-row for aligned layout -->
       <div class="result-row">
         <div class="label">
           เงินที่ต้องการสำหรับใช้จ่ายหลังเกษียณไปอีก 
@@ -192,67 +194,59 @@
         </div>
         <div class="value">
           <span class="result-number" id="totalMoneyNeededAfterRetire">0.00</span>
-          <span class="unit">บาท</span>
+          <span class="unit" style="margin-left: 10px;">บาท</span>
         </div>
       </div>
 
       <div class="result-row">
-        <div class="label">
-          เงินที่ต้องเตรียมไว้เป็นมรดกให้ลูกหลาน:
-        </div>
+        <div class="label">เงินที่ต้องเตรียมไว้เป็นมรดกให้ลูกหลาน:</div>
         <div class="value">
           <span class="result-number" id="legacyPresentValue">0.00</span>
-          <span class="unit">บาท</span>
+          <span class="unit" style="margin-left: 10px;">บาท</span>
         </div>
       </div>
 
       <div class="result-row">
-        <div class="label">
-          รวมเป็นเงินที่ต้องใช้หลังเกษียณอายุ:
-        </div>
+        <div class="label">รวมเป็นเงินที่ต้องใช้หลังเกษียณอายุ:</div>
         <div class="value">
           <span class="result-number" id="totalMoneyNeeded">0.00</span>
-          <span class="unit">บาท</span>
+          <span class="unit" style="margin-left: 10px;">บาท</span>
         </div>
       </div>
 
       <div class="result-row">
-        <div class="label">
-          หัก แหล่งเงินทุนทั้งหมดที่สะสมไว้เพื่อใช้หลังเกษียณอายุ:
-        </div>
+        <div class="label">หัก แหล่งเงินทุนทั้งหมดที่สะสมไว้เพื่อใช้หลังเกษียณอายุ:</div>
         <div class="value">
           <span class="result-number" id="totalSavings">0.00</span>
-          <span class="unit">บาท</span>
+          <span class="unit" style="margin-left: 10px;">บาท</span>
         </div>
       </div>
 
       <div class="result-row">
-        <div class="label">
-          เงินขาด:
-        </div>
+        <div class="label">เงินขาด:</div>
         <div class="value">
           <span class="result-number" id="needOrSurplus">0.00</span>
-          <span class="unit">บาท</span>
+          <span class="unit" style="margin-left: 10px;">บาท</span>
         </div>
       </div>
 
       <div class="result-row">
-        <div class="label">
-          ต้องออมเพื่อเกษียณเดือนละ:
-        </div>
+        <div class="label">ต้องออมเพื่อเกษียณเดือนละ:</div>
         <div class="value">
           <span class="result-number" id="monthlySaving">0.00</span>
-          <span class="unit">บาท</span>
+          <span class="unit" style="margin-left: 10px;">บาท</span>
         </div>
       </div>
     </div>
 
-    <!-- Action Buttons -->
-    <button type="button" id="editButton" class="round-button">แก้ไข</button>
-    <button type="button" id="restartButton" class="round-button">เริ่มใหม่</button>
+    <!-- Bottom Nav - Edit + Restart -->
+    <div class="bottom-nav">
+      <button type="button" id="editButton" class="round-button">แก้ไข</button>
+      <button type="button" id="restartButton" class="round-button">เริ่มใหม่</button>
+    </div>
   </div>
 
-  <!-- Script -->
+  <!-- (Your script.js is referenced here) -->
   <script src="script.js"></script>
 </body>
 </html>
