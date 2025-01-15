@@ -1,10 +1,14 @@
-/* Google Fonts and Base Styles */
-body {
+/* Use Kanit font + bigger base font */
+* {
   font-family: 'Kanit', sans-serif;
-  background-color: #f4f6f8;
+  box-sizing: border-box;
+}
+body {
   margin: 0;
   padding: 0;
-  color: #333333;
+  background-color: #f4f6f8;
+  color: #333;
+  font-size: 1.2rem; /* Increase base font size */
 }
 
 .container {
@@ -13,22 +17,18 @@ body {
   padding: 10px;
 }
 
+/* Header */
 header {
   text-align: center;
   margin-bottom: 15px;
 }
-
 header h1 {
-  font-size: 3rem; /* Further increased font size */
-  color: #007BFF; /* Modern primary color */
-  margin-bottom: 10px;
-  font-weight: 700;
+  font-size: 2.4rem; /* bigger */
+  margin-bottom: 5px;
 }
-
 header p {
-  font-size: 1.3rem; /* Increased font size */
-  color: #555555;
-  font-weight: 400;
+  font-size: 1.4rem; /* bigger */
+  color: #666;
 }
 
 /* Progress Bar */
@@ -36,371 +36,203 @@ header p {
   width: 100%;
   background-color: #e0e0e0;
   border-radius: 25px;
+  height: 30px; /* bigger */
   overflow: hidden;
   margin-bottom: 25px;
-  height: 25px;
 }
-
-.progress-bar .progress {
-  height: 100%;
+.progress {
   width: 0%;
-  background-color: #007BFF; /* Consistent with primary color */
+  height: 100%;
+  background-color: #007BFF;
   transition: width 0.4s ease;
 }
 
-/* Timeline Styles */
+/* Timeline */
 .timeline {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  position: relative;
-  margin-bottom: 30px;
+  align-items: flex-start;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 }
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 10%;
-  right: 10%;
-  height: 4px; /* Thicker line for better visibility */
-  background-color: #cccccc;
-  z-index: -1;
-}
-
 .milestone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 18%;
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.icon {
-  background-color: #007BFF; /* Modern primary color */
-  color: white;
-  width: 60px; /* Increased size */
-  height: 60px; /* Increased size */
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.icon:hover {
-  background-color: #0056b3; /* Darker shade on hover */
-  transform: translateY(-5px);
-}
-
-.input-group {
   text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+.icon {
+  width: 70px; /* bigger */
+  height: 70px; /* bigger */
+  background-color: #007BFF;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 2rem; /* bigger icon text */
+  line-height: 70px;
+  margin: 0 auto 8px;
 }
 
-.input-group label {
-  margin-bottom: 8px;
-  font-size: 1.2rem; /* Increased font size */
-  display: block;
-  font-weight: 500;
-}
-
-.input-group input {
-  width: 100%;
-  max-width: 180px; /* Increased width to accommodate larger font */
-  margin: 0 auto;
-  padding: 14px 18px; /* Increased padding */
-  border: 1px solid #cccccc;
-  border-radius: 8px; /* Rounded corners for modern look */
-  font-size: 1.1rem; /* Increased font size */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.input-group input:focus {
-  border-color: #007BFF;
-  outline: none;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-}
-
+/* Calculated Value (timeline) */
 .calculated-value {
   display: inline-block;
-  padding: 14px 18px; /* Increased padding */
+  padding: 12px; 
   background-color: #e0f7fa;
   color: #006064;
-  border: 1px solid #b3e0ff;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 8px;
   font-weight: 600;
-  font-size: 1.1rem; /* Increased font size */
+  font-size: 1.3rem; /* bigger text */
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  padding: 30px; /* bigger padding */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+.card h2 {
+  font-size: 1.8rem; /* bigger */
+  margin-bottom: 15px;
+}
+
+/* Inputs and error messages */
+.input-group {
+  margin-bottom: 20px;
+}
+.input-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 1.2rem; /* bigger */
+}
+.input-group input {
   width: 100%;
-  text-align: center;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+  padding: 12px; /* bigger */
+  font-size: 1.2rem; /* bigger */
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .error-message {
-  color: #DC3545; /* More prominent red */
-  font-size: 0.95rem; /* Slight increase for better readability */
-  margin-top: 5px;
+  color: red;
   display: none;
+  font-size: 1rem; 
 }
 
-/* Card Styles */
-.card {
-  background-color: #ffffff;
-  border-radius: 12px; /* More rounded corners */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Deeper shadow for depth */
-  padding: 25px; /* Increased padding */
-  margin-bottom: 20px;
-}
-
-.card h2 {
-  font-size: 2rem; /* Increased font size */
-  color: #007BFF;
-  margin-bottom: 20px;
-  position: relative;
-  font-weight: 700;
-}
-
-.card h2::after {
-  content: '';
-  position: absolute;
-  width: 50px; /* Increased width */
-  height: 4px; /* Thicker line */
-  background-color: #007BFF;
-  bottom: -8px;
-  left: 0;
-}
-
-.input-group + .input-group {
-  margin-top: 15px; /* Space between input groups */
-}
-
-button {
-  width: 100%;
-  padding: 18px; /* Increased padding */
-  background-color: #007BFF;
-  color: #ffffff;
-  font-size: 1.2rem; /* Increased font size */
+/* Round Buttons (bigger) */
+button.round-button {
+  padding: 14px 50px; 
+  font-size: 1.2rem; /* bigger */
   border: none;
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 999px;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-top: 20px;
-  font-weight: 600;
+  background-color: #007BFF;
+  color: #fff;
+  margin-top: 10px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+button.round-button:hover {
+  transform: scale(1.05);
+  background-color: #0056b3; 
 }
 
-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-button:focus {
-  outline: none;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-}
-
-/* Results Section */
-#resultsPage {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
+/* Results Card */
 .card.results {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  padding: 25px;
+  padding: 30px; 
 }
-
 .card.results h2 {
-  font-size: 2rem;
+  font-size: 2.2rem; 
   color: #28a745;
   margin-bottom: 20px;
+}
+
+/* .result-row for aligning label and value with space for "บาท" */
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+}
+.result-row .label {
+  font-size: 1.4rem; /* bigger */
+}
+.result-row .value {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+}
+.result-row .value .result-number {
+  font-size: 1.8rem; /* bigger, bolder for numeric */
   font-weight: 700;
+  margin-right: 10px; 
+}
+.result-row .value .unit {
+  font-size: 1.4rem; 
+  font-weight: 400;
 }
 
-#detailedResults p {
-  font-size: 1.2rem; /* Increased font size */
-  color: #555555;
-  margin: 12px 0;
-}
-
-#detailedResults span {
-  font-weight: 600;
-  color: #006064;
-}
-
-#backButton {
-  background-color: #FF5722; /* Modern secondary color */
-}
-
-#backButton:hover {
-  background-color: #e64a19;
-  transform: translateY(-3px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-/* Hidden Class */
+/* Hidden / fade animations */
 .hidden {
   display: none;
 }
-
-/* Responsive Design Enhancements */
-
-/* Medium Devices (Tablets, 992px and below) */
-@media (max-width: 992px) {
-  .timeline {
-    flex-direction: row;
-    justify-content: space-around;
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+.fade-in {
+  animation: fadeIn 0.5s forwards;
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    pointer-events: none;
   }
-
-  .milestone {
-    width: 22%;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-
-  .input-group label {
-    font-size: 1.1rem;
-  }
-
-  .input-group input {
-    max-width: 160px;
-    padding: 12px 16px;
-    font-size: 1rem;
-  }
-
-  .calculated-value {
-    padding: 12px 16px;
-    font-size: 1rem;
-  }
-
-  .card {
-    padding: 20px;
-  }
-
-  .card h2 {
-    font-size: 1.8rem;
-  }
-
-  button {
-    padding: 16px;
-    font-size: 1.1rem;
+  to {
+    opacity: 1;
   }
 }
 
-/* Small Devices (Phones, 768px and below) */
-@media (max-width: 768px) {
+/* Responsive for small screens ~ iPhone 15 */
+@media (max-width: 480px) {
   .timeline {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
-
   .milestone {
     width: 100%;
     margin-bottom: 25px;
-    position: relative;
-    padding-left: 0;
-    display: flex;
-    align-items: center;
   }
-
-  .milestone .icon {
-    margin-right: 20px;
-    margin-bottom: 0;
+  .icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.7rem;
+    line-height: 60px;
   }
-
-  .input-group {
-    text-align: left;
-  }
-
-  .input-group label {
-    font-size: 1rem;
-  }
-
-  .input-group input {
-    max-width: 100%;
-    padding: 10px 14px;
-    font-size: 0.95rem;
-  }
-
-  .calculated-value {
-    padding: 10px 14px;
-    font-size: 0.95rem;
-  }
-
   .card {
-    padding: 18px;
+    padding: 25px;
   }
-
-  .card h2 {
-    font-size: 1.6rem;
-  }
-
-  button {
-    padding: 14px;
-    font-size: 1rem;
-  }
-
-  #detailedResults p {
-    font-size: 1.1rem;
-  }
-}
-
-/* Extra Small Devices (Portrait Phones, 480px and below) */
-@media (max-width: 480px) {
   header h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
-
   header p {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
-
-  .milestone .icon {
-    width: 50px;
-    height: 50px;
+  button.round-button {
+    width: 100%;
+    font-size: 1.2rem;
+    margin-top: 5px;
   }
-
-  .input-group label {
-    font-size: 0.95rem;
+  .result-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
-
-  .input-group input {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .calculated-value {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .card {
-    padding: 15px;
-  }
-
-  .card h2 {
-    font-size: 1.4rem;
-  }
-
-  button {
-    padding: 12px;
-    font-size: 0.95rem;
-  }
-
-  #detailedResults p {
-    font-size: 1rem;
+  .result-row .value {
+    margin-top: 5px;
+    justify-content: flex-start;
   }
 }
