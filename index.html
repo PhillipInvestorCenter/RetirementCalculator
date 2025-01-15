@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>เครื่องคำนวณเงินเกษียณ</title>
   <!-- Google Fonts - Kanit -->
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome for Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Custom CSS -->
+  <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Header Section -->
+
+  <!-- INPUT PAGE -->
+  <div id="inputPage" class="container">
     <header>
       <h1>เครื่องคำนวณเงินเกษียณ</h1>
       <p>วางแผนการเงินเพื่อชีวิตหลังเกษียณที่มั่นคง</p>
@@ -24,141 +23,236 @@
       <div class="progress" id="formProgress"></div>
     </div>
 
-    <!-- Input Page -->
-    <section id="inputPage">
-      <form id="retirementForm">
-        <!-- Retirement Savings Timeline Component -->
-        <div class="timeline">
-          <!-- Current Age Section -->
-          <div class="milestone">
-            <div class="icon">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="input-group">
-              <label for="currentAge">ปัจจุบันอายุ (ปี)</label>
-              <input type="text" id="currentAge" value="0" data-type="number" required aria-label="ปัจจุบันอายุ">
-              <small class="error-message" id="currentAgeError"></small>
-            </div>
-          </div>
-
-          <!-- Savings Period Section (Calculated) -->
-          <div class="milestone">
-            <div class="icon">
-              <i class="fas fa-hourglass-half"></i>
-            </div>
-            <div class="input-group">
-              <label>มีเวลาเก็บเงิน (ปี)</label>
-              <span id="savingsPeriod" class="calculated-value">0</span>
-            </div>
-          </div>
-
-          <!-- Retirement Start Age Section -->
-          <div class="milestone">
-            <div class="icon">
-              <i class="fas fa-briefcase"></i>
-            </div>
-            <div class="input-group">
-              <label for="retireAge">จะเกษียณตอนอายุ (ปี)</label>
-              <input type="text" id="retireAge" value="0" data-type="number" required aria-label="จะเกษียณตอนอายุ">
-              <small class="error-message" id="retireAgeError"></small>
-            </div>
-          </div>
-
-          <!-- Spending Period Section (Calculated) -->
-          <div class="milestone">
-            <div class="icon">
-              <i class="fas fa-wallet"></i>
-            </div>
-            <div class="input-group">
-              <label>ถึงเวลาใช้เงินที่เก็บ (ปี)</label>
-              <span id="spendingPeriod" class="calculated-value">0</span>
-            </div>
-          </div>
-
-          <!-- End of Life Age Section -->
-          <div class="milestone">
-            <div class="icon">
-              <i class="fas fa-heartbeat"></i>
-            </div>
-            <div class="input-group">
-              <label for="deathAge">สิ้นอายุขัย (ปี)</label>
-              <input type="text" id="deathAge" value="0" data-type="number" required aria-label="สิ้นอายุขัย">
-              <small class="error-message" id="deathAgeError"></small>
-            </div>
-          </div>
-        </div>
-        <!-- End of Retirement Savings Timeline Component -->
-
-        <!-- Other Sections -->
-        <div class="card">
-          <h2>ช่วงก่อนเกษียณอายุ</h2>
-          <div class="input-group">
-            <label for="currentSalary">เงินเดือนปัจจุบัน (บาท/เดือน)</label>
-            <input type="text" id="currentSalary" value="0" data-type="number" required aria-label="เงินเดือนปัจจุบัน">
-            <small class="error-message" id="currentSalaryError"></small>
-          </div>
-          <div class="input-group">
-            <label for="currentExpense">ค่าใช้จ่ายปัจจุบัน (บาท/เดือน)</label>
-            <input type="text" id="currentExpense" value="0" data-type="number" required aria-label="ค่าใช้จ่ายปัจจุบัน">
-            <small class="error-message" id="currentExpenseError"></small>
-          </div>
-          <div class="input-group">
-            <label for="currentSavings">เงินสะสมเพื่อเกษียณปัจจุบัน (บาท)</label>
-            <input type="text" id="currentSavings" value="0" data-type="number" required aria-label="เงินสะสมเพื่อเกษียณปัจจุบัน">
-            <small class="error-message" id="currentSavingsError"></small>
-          </div>
-          <div class="input-group">
-            <label for="annualReturn">อัตราผลตอบแทน (% ต่อปี)</label>
-            <input type="text" id="annualReturn" value="0" data-type="number" required aria-label="อัตราผลตอบแทน">
-            <small class="error-message" id="annualReturnError"></small>
-          </div>
+    <!-- Retirement Form -->
+    <form id="retirementForm">
+      <!-- Timeline Display -->
+      <div class="timeline">
+        <!-- Current Age -->
+        <div class="milestone">
+          <div class="icon">👤</div>
+          <label for="currentAge">ปัจจุบันอายุ (ปี)</label>
+          <input 
+            id="currentAge"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+          <small id="currentAgeError" class="error-message"></small>
         </div>
 
-        <div class="card">
-          <h2>ช่วงหลังเกษียณอายุ</h2>
-          <div class="input-group">
-            <label for="legacy">ต้องการเหลือเงินไว้ให้มรดก (บาท)</label>
-            <input type="text" id="legacy" value="0" data-type="number" required aria-label="ต้องการเหลือเงินไว้ให้มรดก">
-            <small class="error-message" id="legacyError"></small>
-          </div>
-          <div class="input-group">
-            <label for="inflationRate">อัตราเงินเฟ้อ (% ต่อปี)</label>
-            <input type="text" id="inflationRate" value="0" data-type="number" required aria-label="อัตราเงินเฟ้อ">
-            <small class="error-message" id="inflationRateError"></small>
-          </div>
-          <div class="input-group">
-            <label for="postRetirementReturn">อัตราผลตอบแทน (% ต่อปี)</label>
-            <input type="text" id="postRetirementReturn" value="0" data-type="number" required aria-label="อัตราผลตอบแทนหลังเกษียณ">
-            <small class="error-message" id="postRetirementReturnError"></small>
-          </div>
+        <!-- Savings Period -->
+        <div class="milestone">
+          <div class="icon">⏳</div>
+          <label>มีเวลาเก็บเงิน (ปี)</label>
+          <div class="calculated-value" id="savingsPeriod">0</div>
         </div>
 
-        <button type="button" id="calculateButton">คำนวณเงินเกษียณ</button>
-      </form>
-    </section>
-
-    <!-- Results Page -->
-    <section id="resultsPage" class="hidden">
-      <div class="card results">
-        <h2>ผลการคำนวณเงินเกษียณ</h2>
-        <div id="detailedResults">
-          <p>เงินที่ต้องการสำหรับใช้จ่ายหลังเกษียณไปอีก <span id="spendingPeriodDisplay">0</span> ปี: <span id="totalMoneyNeededAfterRetire">฿0.00</span> บาท</p>
-          <p>เงินที่ต้องเตรียมไว้เป็นมรดกให้ลูกหลาน: <span id="legacyPresentValue">฿0.00</span> บาท</p>
-          <p>รวมเป็นเงินที่ต้องใช้หลังเกษียณอายุ: <span id="totalMoneyNeeded">฿0.00</span> บาท</p>
-          <p>หัก แหล่งเงินทุนทั้งหมดที่สะสมไว้เพื่อใช้หลังเกษียณอายุ: <span id="totalSavings">฿0.00</span> บาท</p>
-          <p>เงินขาด: <span id="needOrSurplus">฿0.00</span> บาท</p>
-          <p>ต้องออมเพื่อเกษียณเดือนละ: <span id="monthlySaving">฿0.00</span> บาท</p>
+        <!-- Retire Age -->
+        <div class="milestone">
+          <div class="icon">💼</div>
+          <label for="retireAge">จะเกษียณตอนอายุ (ปี)</label>
+          <input 
+            id="retireAge"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+          <small id="retireAgeError" class="error-message"></small>
         </div>
-          <button type="button" id="editButton">แก้ไข</button>
-          <button type="button" id="restartButton">เริ่มใหม่</button>
+
+        <!-- Spending Period -->
+        <div class="milestone">
+          <div class="icon">👛</div>
+          <label>ถึงเวลาใช้เงินที่เก็บ (ปี)</label>
+          <div class="calculated-value" id="spendingPeriod">0</div>
+        </div>
+
+        <!-- Death Age -->
+        <div class="milestone">
+          <div class="icon">❤️</div>
+          <label for="deathAge">สิ้นอายุขัย (ปี)</label>
+          <input 
+            id="deathAge"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+          <small id="deathAgeError" class="error-message"></small>
+        </div>
       </div>
-    </section>
+
+      <!-- Card: Before Retirement -->
+      <div class="card">
+        <h2>ช่วงก่อนเกษียณอายุ</h2>
+        <div class="input-group">
+          <label for="currentSalary">เงินเดือนปัจจุบัน (บาท/เดือน)</label>
+          <input 
+            id="currentSalary"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+        <div class="input-group">
+          <label for="currentExpense">ค่าใช้จ่ายปัจจุบัน (บาท/เดือน)</label>
+          <input 
+            id="currentExpense"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+        <div class="input-group">
+          <label for="currentSavings">เงินสะสมเพื่อเกษียณปัจจุบัน (บาท)</label>
+          <input 
+            id="currentSavings"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+        <div class="input-group">
+          <label for="annualReturn">อัตราผลตอบแทน (% ต่อปี)</label>
+          <input 
+            id="annualReturn"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+      </div>
+
+      <!-- Card: After Retirement -->
+      <div class="card">
+        <h2>ช่วงหลังเกษียณอายุ</h2>
+        <div class="input-group">
+          <label for="legacy">ต้องการเหลือเงินไว้ให้มรดก (บาท)</label>
+          <input 
+            id="legacy"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+        <div class="input-group">
+          <label for="inflationRate">อัตราเงินเฟ้อ (% ต่อปี)</label>
+          <input 
+            id="inflationRate"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+        <div class="input-group">
+          <label for="postRetirementReturn">อัตราผลตอบแทนหลังเกษียณ (% ต่อปี)</label>
+          <input 
+            id="postRetirementReturn"
+            data-type="number"
+            value="0"
+            type="text"
+            pattern="[0-9]*"
+            inputmode="decimal"
+          />
+        </div>
+      </div>
+
+      <!-- Calculate Button -->
+      <button type="button" id="calculateButton" class="round-button">คำนวณเงินเกษียณ</button>
+    </form>
   </div>
 
-  <!-- Optional: Chart.js for Graphical Representation -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <!-- RESULTS PAGE -->
+  <div id="resultsPage" class="hidden container">
+    <div class="card results">
+      <h2>ผลการคำนวณเงินเกษียณ</h2>
 
-  <!-- Custom JS -->
+      <!-- Use .result-row for aligned layout -->
+      <div class="result-row">
+        <div class="label">
+          เงินที่ต้องการสำหรับใช้จ่ายหลังเกษียณไปอีก 
+          <span id="spendingPeriodDisplay">0</span> ปี:
+        </div>
+        <div class="value">
+          <span class="result-number" id="totalMoneyNeededAfterRetire">0.00</span>
+          <span class="unit">บาท</span>
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div class="label">
+          เงินที่ต้องเตรียมไว้เป็นมรดกให้ลูกหลาน:
+        </div>
+        <div class="value">
+          <span class="result-number" id="legacyPresentValue">0.00</span>
+          <span class="unit">บาท</span>
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div class="label">
+          รวมเป็นเงินที่ต้องใช้หลังเกษียณอายุ:
+        </div>
+        <div class="value">
+          <span class="result-number" id="totalMoneyNeeded">0.00</span>
+          <span class="unit">บาท</span>
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div class="label">
+          หัก แหล่งเงินทุนทั้งหมดที่สะสมไว้เพื่อใช้หลังเกษียณอายุ:
+        </div>
+        <div class="value">
+          <span class="result-number" id="totalSavings">0.00</span>
+          <span class="unit">บาท</span>
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div class="label">
+          เงินขาด:
+        </div>
+        <div class="value">
+          <span class="result-number" id="needOrSurplus">0.00</span>
+          <span class="unit">บาท</span>
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div class="label">
+          ต้องออมเพื่อเกษียณเดือนละ:
+        </div>
+        <div class="value">
+          <span class="result-number" id="monthlySaving">0.00</span>
+          <span class="unit">บาท</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <button type="button" id="editButton" class="round-button">แก้ไข</button>
+    <button type="button" id="restartButton" class="round-button">เริ่มใหม่</button>
+  </div>
+
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
